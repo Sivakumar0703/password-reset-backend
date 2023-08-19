@@ -1,0 +1,34 @@
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const secretkey = process.env.SECRET_KEY;
+
+
+// function to hash password
+const hashPassword = async(password)=>{
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password , salt);
+    return hashedPassword
+}
+
+// compare hashed password
+const compare = async(password , hashedPassword)=>{
+    return await bcrypt.compare(password , hashedPassword)
+}
+
+// generate Link
+const generateLink = async(email)=>{
+const payload = {email:email}
+// generate verification string
+const verification = Math.random().toString(36).substring(2,7);
+    const token = jwt.sign(payload , secretkey , {expiresIn:"5m"})
+    return {token:token , verification:verification}
+}
+
+// verify token
+const verifyToken = (token)=>{
+    const payload = jwt.verify(token , secretkey);
+}
+
+
+
+module.exports = {hashPassword , compare , generateLink , verifyToken}
