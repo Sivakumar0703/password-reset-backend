@@ -18,15 +18,15 @@ const compare = async(password , hashedPassword)=>{
 // generate Link
 const generateLink = async(email)=>{
 const payload = {email:email}
-// generate verification string
-const verification = Math.random().toString(36).substring(2,7);
+const verification = Math.random().toString(36).substring(2,7); // generate verification string
     const token = jwt.sign(payload , secretkey , {expiresIn:"5m"})
     return {token:token , verification:verification}
+
 }
 
 // verify token
 const verifyToken = (token)=>{
-    const payload = jwt.verify(token , secretkey);
+    return jwt.verify(token , secretkey);
 }
 
 
